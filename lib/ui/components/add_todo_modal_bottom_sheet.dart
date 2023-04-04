@@ -9,8 +9,9 @@ class AddTaskModalBottomSheet extends StatefulWidget {
   const AddTaskModalBottomSheet({super.key});
 
   @override
-  State<AddTaskModalBottomSheet> createState() =>
-      _AddTaskModalBottomSheetState();
+  State<AddTaskModalBottomSheet> createState() {
+    return _AddTaskModalBottomSheetState();
+  }
 }
 
 class _AddTaskModalBottomSheetState extends State<AddTaskModalBottomSheet> {
@@ -23,7 +24,7 @@ class _AddTaskModalBottomSheetState extends State<AddTaskModalBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TodoProvider>(context);
+    print("Build Add Todo Modal");
     ThemeData themeData = Theme.of(context).copyWith(
       colorScheme: ColorScheme.light(primary: Theme.of(context).primaryColor),
     );
@@ -56,6 +57,7 @@ class _AddTaskModalBottomSheetState extends State<AddTaskModalBottomSheet> {
                     builder: (context) => const CategoryBox(),
                   ))
                       .then((value) {
+                    if (value == null) return;
                     setState(() {
                       category = value;
                     });
@@ -136,15 +138,21 @@ class _AddTaskModalBottomSheetState extends State<AddTaskModalBottomSheet> {
           ),
           Expanded(
             flex: 1,
-            child: IconButton(
-              onPressed: () {
-                if (titleController.text.isNotEmpty) {
-                  provider.addTodo(titleController.text.trim(),
-                      descriptionController.text.trim(), date, time, category);
-                }
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(Icons.add_circle_outline_sharp),
+            child: Consumer<TodoProvider>(
+              builder: (context, value, child) => IconButton(
+                onPressed: () {
+                  if (titleController.text.isNotEmpty) {
+                    value.addTodo(
+                        titleController.text.trim(),
+                        descriptionController.text.trim(),
+                        date,
+                        time,
+                        category);
+                  }
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(Icons.add_circle_outline_sharp),
+              ),
             ),
           )
         ]),

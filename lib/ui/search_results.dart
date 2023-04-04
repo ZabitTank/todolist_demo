@@ -10,7 +10,7 @@ class SearchResultsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Delete page build");
+    print("Search page build");
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -50,7 +50,7 @@ class SearchResultsPage extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: searchResults.length,
                     itemBuilder: (context, index) =>
-                        TodoTile(todo: searchResults[index]),
+                        TodoTile(todo: searchResults[index], parent: "search"),
                   ),
                 ),
               );

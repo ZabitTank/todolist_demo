@@ -18,26 +18,27 @@ class _CompletedTodosPageState extends State<CompletedTodosPage>
     super.build(context);
     print("completed page build");
 
-    return Consumer<TodoProvider>(
+    return Selector<TodoProvider, List<Todo>>(
+      selector: (_, provider) => provider.completedTodos,
       builder: (context, value, child) {
-        final List<Todo> completedTodos = value.completedTodos;
         return Visibility(
           replacement: const Center(
             child: Text("You have not completed any tasks"),
           ),
-          visible: completedTodos.isNotEmpty,
+          visible: value.isNotEmpty,
           child: Padding(
             padding: const EdgeInsets.all(30),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text("${completedTodos.length} Completed"),
+              Text("${value.length} Completed"),
               const Divider(),
               const Padding(padding: EdgeInsets.only(bottom: 10)),
               Expanded(
                 child: ListView.builder(
-                  itemCount: completedTodos.length,
+                  itemCount: value.length,
                   itemBuilder: (context, index) => TodoTile(
-                    todo: completedTodos[index],
+                    todo: value[index],
+                    parent: "Completed",
                   ),
                 ),
               ),

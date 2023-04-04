@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todolist_demo/models/todo.dart';
 import 'package:todolist_demo/providers/todo_provider.dart';
 import 'package:todolist_demo/ui/components/add_todo_modal_bottom_sheet.dart';
 import 'package:todolist_demo/ui/components/search_bar.dart';
@@ -48,47 +49,32 @@ class _TodosPageState extends State<TodosPage>
             ),
             Expanded(
               child: Padding(
-                  padding: const EdgeInsets.only(top: 30),
-                  child: Consumer<TodoProvider>(
-                    builder: (context, data, _) {
-                      final todos = data.allTodos
-                          .where((element) =>
-                              !element.isComplete && !element.toBeDeleted)
-                          .toList();
-                      return Visibility(
-                        visible: todos.isNotEmpty,
-                        replacement: const Center(
-                          child: Text(
-                            "You have no tasks",
-                            style: TextStyle(letterSpacing: 0.1),
-                          ),
+                padding: const EdgeInsets.only(top: 30),
+                child: Consumer<TodoProvider>(
+                  builder: (context, provider, _) {
+                    final data = provider.allTodos
+                        .where((element) => !element.toBeDeleted)
+                        .toList();
+                    return Visibility(
+                      visible: data.isNotEmpty,
+                      replacement: const Center(
+                        child: Text(
+                          "You have no tasks",
+                          style: TextStyle(letterSpacing: 0.1),
                         ),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: todos.length,
-                          itemBuilder: (context, index) => TodoTile(
-                            todo: todos[index],
-                          ),
+                      ),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: data.length,
+                        itemBuilder: (context, index) => TodoTile(
+                          parent: "Todo List",
+                          todo: data[index],
                         ),
-                      );
-                    },
-                  )
-
-                  // child: Visibility(
-                  //   visible: todos.isNotEmpty,
-                  //   replacement: const Center(
-                  //     child: Text(
-                  //       "You have no tasks",
-                  //       style: TextStyle(letterSpacing: 0.1),
-                  //     ),
-                  //   ),
-                  //   child: ListView.builder(
-                  //       shrinkWrap: true,
-                  //       itemCount: todos.length,
-                  //       itemBuilder: (context, index) =>
-                  //           TodoTile(todo: todos[index])),
-                  // ),
-                  ),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ),
           ],
         ),

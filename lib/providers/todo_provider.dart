@@ -56,6 +56,7 @@ class TodoProvider extends ChangeNotifier {
   }
 
   void toggleIsComplete(Todo todo) {
+    if (todo.toBeDeleted) return;
     todo.isComplete = !todo.isComplete;
     notifyListeners();
   }

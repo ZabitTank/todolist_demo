@@ -40,10 +40,14 @@ class _CategoryBoxState extends State<CategoryBox> {
         onPressed: () async {
           await showModalBottomSheet(
             context: context,
-            builder: (context) => Wrap(
-              children: const [
-                AddCategoryModalBottomSheet(),
-              ],
+            isScrollControlled: true,
+            builder: (context) => Padding(
+              padding: MediaQuery.of(context).viewInsets,
+              child: Wrap(
+                children: const [
+                  AddCategoryModalBottomSheet(),
+                ],
+              ),
             ),
           ).then((value) => provider.addCategory(value));
         },

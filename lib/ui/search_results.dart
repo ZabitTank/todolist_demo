@@ -50,7 +50,7 @@ class SearchResultsPage extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: searchResults.length,
                     itemBuilder: (context, index) =>
-                        TodoTile(todo: searchResults[index], provider: value),
+                        TodoTile(todo: searchResults[index]),
                   ),
                 ),
               );

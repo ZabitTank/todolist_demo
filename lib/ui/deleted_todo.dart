@@ -31,7 +31,6 @@ class _DeletedTodosPageState extends State<DeletedTodosPage>
               child: ListView.builder(
                 itemCount: deletedTodos.length,
                 itemBuilder: (context, index) => TodoTile(
-                  provider: value,
                   todo: deletedTodos[index],
                 ),
               ),

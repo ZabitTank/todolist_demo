@@ -6,14 +6,13 @@ import 'package:todolist_demo/ui/todo_page.dart';
 
 class TodoTile extends StatelessWidget {
   final Todo todo;
-  final TodoProvider provider;
-  const TodoTile({super.key, required this.todo, required this.provider});
+  const TodoTile({super.key, required this.todo});
 
   @override
   Widget build(BuildContext context) {
     print("build todoTile ${todo.title}");
     // final todo = todo;
-
+    final provider = Provider.of<TodoProvider>(context, listen: false);
     return SizedBox(
       height: 90,
       child: Card(

@@ -15,32 +15,36 @@ class _CompletedTodosPageState extends State<CompletedTodosPage>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
-    print("complete page build");
-    final provider = Provider.of<TodoProvider>(context);
-    final List<Todo> completedTodos = provider.completedTodos;
+    super.build(context);
+    print("completed page build");
 
-    return Visibility(
-      replacement: const Center(
-        child: Text("You have not completed any tasks"),
-      ),
-      visible: completedTodos.isNotEmpty,
-      child: Padding(
-        padding: const EdgeInsets.all(30),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text("${completedTodos.length} Completed"),
-          const Divider(),
-          const Padding(padding: EdgeInsets.only(bottom: 10)),
-          Expanded(
-            child: ListView.builder(
-              itemCount: completedTodos.length,
-              itemBuilder: (context, index) => TodoTile(
-                provider: provider,
-                todo: completedTodos[index],
-              ),
-            ),
+    return Consumer<TodoProvider>(
+      builder: (context, value, child) {
+        final List<Todo> completedTodos = value.completedTodos;
+        return Visibility(
+          replacement: const Center(
+            child: Text("You have not completed any tasks"),
           ),
-        ]),
-      ),
+          visible: completedTodos.isNotEmpty,
+          child: Padding(
+            padding: const EdgeInsets.all(30),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text("${completedTodos.length} Completed"),
+              const Divider(),
+              const Padding(padding: EdgeInsets.only(bottom: 10)),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: completedTodos.length,
+                  itemBuilder: (context, index) => TodoTile(
+                    todo: completedTodos[index],
+                  ),
+                ),
+              ),
+            ]),
+          ),
+        );
+      },
     );
   }
 

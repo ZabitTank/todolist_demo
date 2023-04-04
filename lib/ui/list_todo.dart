@@ -68,7 +68,6 @@ class _TodosPageState extends State<TodosPage>
                           itemCount: todos.length,
                           itemBuilder: (context, index) => TodoTile(
                             todo: todos[index],
-                            provider: data,
                           ),
                         ),
                       );

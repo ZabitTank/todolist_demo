@@ -10,9 +10,7 @@ class SearchResultsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TodoProvider>(context);
-    List<Todo> searchResults = provider.getSearchResults(task);
-
+    print("Delete page build");
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -40,19 +38,23 @@ class SearchResultsPage extends StatelessWidget {
         padding: const EdgeInsets.all(30),
         child: Column(
           children: [
-            Visibility(
-              replacement: Center(
-                child: Text("${searchResults.length} items found"),
-              ),
-              visible: searchResults.isNotEmpty,
-              child: Expanded(
-                child: ListView.builder(
-                  itemCount: searchResults.length,
-                  itemBuilder: (context, index) =>
-                      TodoTile(todo: searchResults[index]),
+            Consumer<TodoProvider>(builder: (context, value, child) {
+              List<Todo> searchResults = value.getSearchResults(task);
+
+              return Visibility(
+                replacement: Center(
+                  child: Text("${searchResults.length} items found"),
                 ),
-              ),
-            )
+                visible: searchResults.isNotEmpty,
+                child: Expanded(
+                  child: ListView.builder(
+                    itemCount: searchResults.length,
+                    itemBuilder: (context, index) =>
+                        TodoTile(todo: searchResults[index], provider: value),
+                  ),
+                ),
+              );
+            })
           ],
         ),
       ),

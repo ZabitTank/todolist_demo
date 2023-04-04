@@ -4,19 +4,15 @@ import 'package:todolist_demo/models/todo.dart';
 import 'package:todolist_demo/providers/todo_provider.dart';
 import 'package:todolist_demo/ui/todo_page.dart';
 
-class TodoTile extends StatefulWidget {
+class TodoTile extends StatelessWidget {
   final Todo todo;
-  const TodoTile({super.key, required this.todo});
+  final TodoProvider provider;
+  const TodoTile({super.key, required this.todo, required this.provider});
 
-  @override
-  State<TodoTile> createState() => _TodoTileState();
-}
-
-class _TodoTileState extends State<TodoTile> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TodoProvider>(context);
-    final todo = widget.todo;
+    print("build todoTile ${todo.title}");
+    // final todo = todo;
 
     return SizedBox(
       height: 90,
@@ -69,8 +65,7 @@ class _TodoTileState extends State<TodoTile> {
                           Visibility(
                             visible: todo.date != provider.currentDate,
                             child: Text(
-                              widget.todo.date
-                                      .contains(DateTime.now().year.toString())
+                              todo.date.contains(DateTime.now().year.toString())
                                   ? todo.date.replaceAll(
                                       RegExp(", ${DateTime.now().year}"),
                                       todo.time.isNotEmpty ? ", " : "")

@@ -4,11 +4,18 @@ import 'package:todolist_demo/models/todo.dart';
 import 'package:todolist_demo/providers/todo_provider.dart';
 import 'package:todolist_demo/ui/components/todo_tile.dart';
 
-class CompletedTodosPage extends StatelessWidget {
+class CompletedTodosPage extends StatefulWidget {
   const CompletedTodosPage({super.key});
 
   @override
+  State<CompletedTodosPage> createState() => _CompletedTodosPageState();
+}
+
+class _CompletedTodosPageState extends State<CompletedTodosPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
+    print("complete page build");
     final provider = Provider.of<TodoProvider>(context);
     final List<Todo> completedTodos = provider.completedTodos;
 
@@ -27,6 +34,7 @@ class CompletedTodosPage extends StatelessWidget {
             child: ListView.builder(
               itemCount: completedTodos.length,
               itemBuilder: (context, index) => TodoTile(
+                provider: provider,
                 todo: completedTodos[index],
               ),
             ),
@@ -35,4 +43,7 @@ class CompletedTodosPage extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -10,6 +10,8 @@ class TodoPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Build todo page");
+
     final provider = Provider.of<TodoProvider>(context);
 
     void closePage() {

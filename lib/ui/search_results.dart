@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
+import 'package:todolist_demo/blocs/todo_bloc.dart';
 import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
 import 'package:todolist_demo/models/todo.dart';
 import 'package:todolist_demo/ui/components/todo_tile.dart';
@@ -39,7 +39,7 @@ class SearchResultsPage extends StatelessWidget {
         padding: const EdgeInsets.all(30),
         child: Column(
           children: [
-            BlocSelector<TodoCubit, TodoState, List<Todo>>(
+            BlocSelector<TodoBloc, TodoState, List<Todo>>(
                 selector: (state) => state.getSearchResults(task),
                 builder: (context, value) {
                   return Visibility(

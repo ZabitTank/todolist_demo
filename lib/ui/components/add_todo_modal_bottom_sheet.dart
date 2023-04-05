@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
+import 'package:todolist_demo/blocs/todo_bloc.dart';
 import 'package:todolist_demo/models/todo.dart';
 import 'package:todolist_demo/ui/categories.dart';
 import 'package:todolist_demo/ui/components/todo_property_row.dart';
@@ -56,7 +56,7 @@ class _AddTaskModalBottomSheetState extends State<AddTaskModalBottomSheet> {
                 onPressed: () async {
                   await Navigator.of(context)
                       .push(MaterialPageRoute(
-                    builder: (context) => const CategoryBox(),
+                    builder: (context) => CategoryBox(),
                   ))
                       .then((value) {
                     if (value == null) return;
@@ -143,12 +143,16 @@ class _AddTaskModalBottomSheetState extends State<AddTaskModalBottomSheet> {
             child: IconButton(
               onPressed: () {
                 if (titleController.text.isNotEmpty) {
-                  context.read<TodoCubit>().addTodo(Todo(
-                      title: titleController.text.trim(),
-                      description: descriptionController.text.trim(),
-                      date: date,
-                      time: time,
-                      category: category));
+                  context.read<TodoBloc>().add(
+                        AddTodoEvent(
+                          newTodo: Todo(
+                              title: titleController.text.trim(),
+                              description: descriptionController.text.trim(),
+                              date: date,
+                              time: time,
+                              category: category),
+                        ),
+                      );
                 }
                 Navigator.of(context).pop();
               },

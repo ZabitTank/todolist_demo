@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
+import 'package:todolist_demo/blocs/todo_bloc.dart';
 import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
 import 'package:todolist_demo/ui/components/add_todo_modal_bottom_sheet.dart';
 import 'package:todolist_demo/ui/components/search_bar.dart';
@@ -50,7 +50,7 @@ class _TodosPageState extends State<TodosPage>
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(top: 30),
-                child: BlocBuilder<TodoCubit, TodoState>(
+                child: BlocBuilder<TodoBloc, TodoState>(
                   builder: (context, state) {
                     final data = state.allTodos
                         .where((element) => !element.toBeDeleted)

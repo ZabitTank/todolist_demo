@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
+import 'package:todolist_demo/blocs/todo_bloc.dart';
 import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
 import 'package:todolist_demo/models/todo.dart';
 import 'package:todolist_demo/ui/components/todo_tile.dart';
@@ -19,7 +19,7 @@ class _DeletedTodosPageState extends State<DeletedTodosPage>
     super.build(context);
     print("delete page build");
 
-    return BlocSelector<TodoCubit, TodoState, List<Todo>>(
+    return BlocSelector<TodoBloc, TodoState, List<Todo>>(
         selector: (state) => state.deletedTodos,
         builder: (context, deletedTodos) {
           return Visibility(

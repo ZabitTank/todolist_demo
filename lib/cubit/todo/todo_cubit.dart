@@ -1,7 +1,5 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:intl/intl.dart';
-import 'package:todolist_demo/constants/constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todolist_demo/data/constants.dart';
 import 'package:todolist_demo/models/todo.dart';
 
 part 'todo_state.dart';
@@ -9,14 +7,8 @@ part 'todo_state.dart';
 class TodoCubit extends Cubit<TodoState> {
   TodoCubit()
       : super(TodoState(
-          allTodos: TodoDataProvider.allTodos,
+          allTodos: OldDataProvider.allTodos,
         ));
-
-  @override
-  void onChange(Change<TodoState> change) {
-    super.onChange(change);
-    print("TodoCubit: ${change.currentState.allTodos}");
-  }
 
   void addTodo(Todo todo) {
     emit(TodoState(allTodos: [...state.allTodos, todo]));
@@ -28,6 +20,7 @@ class TodoCubit extends Cubit<TodoState> {
   }
 
   void toggleIsComplete(Todo todo) {
+    if (todo.toBeDeleted) return;
     todo.isComplete = !todo.isComplete;
     emit(TodoState(allTodos: state.allTodos));
   }

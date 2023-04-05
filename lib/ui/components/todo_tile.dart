@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
+import 'package:todolist_demo/blocs/todo_bloc.dart';
 import 'package:todolist_demo/models/todo.dart';
 import 'package:todolist_demo/ui/todo_page.dart';
 
@@ -26,7 +26,8 @@ class TodoTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InkWell(
-                onTap: () => context.read<TodoCubit>().toggleIsComplete(todo),
+                onTap: () =>
+                    context.read<TodoBloc>().add(CompleteTodoEvent(todo: todo)),
                 child: Icon(
                   todo.isComplete ? Icons.check_circle : Icons.circle_outlined,
                   size: 25,
@@ -96,8 +97,7 @@ class TodoTile extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      context.read<TodoCubit>().toggleToBeDeleted(todo);
-                      print("On tap delete");
+                      context.read<TodoBloc>().add(DeleteTodoEvent(todo: todo));
                     },
                     child: todo.toBeDeleted
                         ? const Icon(

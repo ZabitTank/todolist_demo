@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
-import 'package:todolist_demo/cubit/categories/categories_cubit.dart';
-import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
+import 'package:todolist_demo/blocs/todo_bloc.dart';
+import 'package:todolist_demo/data/repository.dart';
 import 'package:todolist_demo/ui/completed_todo.dart';
 import 'package:todolist_demo/ui/deleted_todo.dart';
 import 'package:todolist_demo/ui/list_todo.dart';
 
 void main() {
-  runApp(
-      //   BlocProvider(
-      //   child: BlocProvider(
-      //     create: (context) => TodoCubit(),
-      //     child: const MyApp(),
-      //   ),
-      //   create: (context) => CategoriesCubit(),
-      // )
-      MultiBlocProvider(
-    providers: [
-      BlocProvider(
-        create: (context) => TodoCubit(),
-      ),
-      BlocProvider(
-        create: (context) => CategoriesCubit(),
-      ),
-    ],
-    child: const MyApp(),
+  runApp(RepositoryProvider(
+    create: (context) => Repository(),
+    child: BlocProvider(
+      child: const MyApp(),
+      create: (context) => TodoBloc(
+        repository: RepositoryProvider.of<Repository>(context),
+      )..add(InitTodoEvent()),
+    ),
   ));
+  //     MultiBlocProvider(
+  //   providers: [
+  //     BlocProvider(
+  //       create: (context) => TodoCubit(),
+  //     ),
+  //     BlocProvider(
+  //       create: (context) => CategoriesCubit(),
+  //     ),
+  //   ],
+  //   child: const MyApp(),
+  // ));
 }
 
 class MyApp extends StatelessWidget {

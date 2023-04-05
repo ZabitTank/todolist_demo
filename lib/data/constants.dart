@@ -1,6 +1,6 @@
 import 'package:todolist_demo/models/todo.dart';
 
-class TodoDataProvider {
+class OldDataProvider {
   static List<String> categories = ["Urgent", "Important", "Not Important"];
 
   static List<Todo> allTodos = [

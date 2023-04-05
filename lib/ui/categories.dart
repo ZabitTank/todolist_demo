@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
+import 'package:todolist_demo/blocs/categories_bloc.dart';
 import 'package:todolist_demo/cubit/categories/categories_cubit.dart';
 import 'package:todolist_demo/ui/components/add_category_modal_bottom_sheet.dart';
 import 'package:todolist_demo/ui/components/delete_button.dart';
 
 class CategoryBox extends StatefulWidget {
-  const CategoryBox({super.key});
+  final CategoriesBloc bloc = CategoriesBloc();
+  CategoryBox({super.key});
 
   @override
   State<CategoryBox> createState() => _CategoryBoxState();
@@ -48,7 +49,8 @@ class _CategoryBoxState extends State<CategoryBox> {
                 ],
               ),
             ),
-          ).then((value) => context.read<CategoriesCubit>().addCategory(value));
+          ).then((value) =>
+              widget.bloc.add(AddCategoriesEvent(newCategory: value)));
         },
         backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(Icons.add),
@@ -57,7 +59,8 @@ class _CategoryBoxState extends State<CategoryBox> {
         padding: const EdgeInsets.all(20),
         child: Column(children: [
           Expanded(
-            child: BlocBuilder<CategoriesCubit, CategoriesState>(
+            child: BlocBuilder<CategoriesBloc, CategoriesState>(
+              bloc: widget.bloc,
               builder: (context, state) {
                 return ListView.builder(
                   itemCount: state.categories.length,
@@ -75,9 +78,11 @@ class _CategoryBoxState extends State<CategoryBox> {
                           },
                           icon: const Icon(Icons.check, size: 20)),
                       DeleteButton(
-                          onTap: () => context
-                              .read<CategoriesCubit>()
-                              .removeCategory(state.categories[index]))
+                        onTap: () => widget.bloc.add(
+                          DeleteCategoryEvent(
+                              category: state.categories[index]),
+                        ),
+                      ),
                     ],
                   ),
                 );

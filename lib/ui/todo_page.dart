@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:provider/provider.dart';
-import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todolist_demo/blocs/todo_bloc.dart';
 import 'package:todolist_demo/models/todo.dart';
 
 class TodoPage extends StatelessWidget {
@@ -25,7 +24,8 @@ class TodoPage extends StatelessWidget {
           actions: [
             InkWell(
               onTap: () {
-                context.read<TodoCubit>().toggleToBeDeleted(todo);
+                BlocProvider.of<TodoBloc>(context)
+                    .add(DeleteTodoEvent(todo: todo));
                 closePage();
                 closePage();
               },

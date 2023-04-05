@@ -1,12 +1,12 @@
-import 'package:bloc/bloc.dart';
-import 'package:todolist_demo/constants/constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todolist_demo/data/constants.dart';
 
 part 'categories_state.dart';
 
 class CategoriesCubit extends Cubit<CategoriesState> {
   CategoriesCubit()
       : super(CategoriesState(
-          categories: TodoDataProvider.categories,
+          categories: OldDataProvider.categories,
         ));
 
   void addCategory(String category) {

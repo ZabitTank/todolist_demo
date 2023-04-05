@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist_demo/providers/todo_provider.dart';
+import 'package:todolist_demo/cubit/categories/categories_cubit.dart';
+import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
 import 'package:todolist_demo/ui/completed_todo.dart';
 import 'package:todolist_demo/ui/deleted_todo.dart';
 import 'package:todolist_demo/ui/list_todo.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
+  runApp(
+      //   BlocProvider(
+      //   child: BlocProvider(
+      //     create: (context) => TodoCubit(),
+      //     child: const MyApp(),
+      //   ),
+      //   create: (context) => CategoriesCubit(),
+      // )
+      MultiBlocProvider(
+    providers: [
+      BlocProvider(
+        create: (context) => TodoCubit(),
+      ),
+      BlocProvider(
+        create: (context) => CategoriesCubit(),
+      ),
+    ],
     child: const MyApp(),
-    create: (context) => TodoProvider(),
   ));
 }
 

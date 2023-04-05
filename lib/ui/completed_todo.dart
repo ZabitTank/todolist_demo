@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
 import 'package:todolist_demo/models/todo.dart';
-import 'package:todolist_demo/providers/todo_provider.dart';
 import 'package:todolist_demo/ui/components/todo_tile.dart';
 
 class CompletedTodosPage extends StatefulWidget {
@@ -18,9 +19,11 @@ class _CompletedTodosPageState extends State<CompletedTodosPage>
     super.build(context);
     print("completed page build");
 
-    return Selector<TodoProvider, List<Todo>>(
-      selector: (_, provider) => provider.completedTodos,
-      builder: (context, value, child) {
+    return BlocBuilder<TodoCubit, TodoState>(
+      buildWhen: (previous, current) =>
+          previous.completedTodos != current.completedTodos,
+      builder: (context, state) {
+        final value = state.completedTodos;
         return Visibility(
           replacement: const Center(
             child: Text("You have not completed any tasks"),
@@ -30,7 +33,7 @@ class _CompletedTodosPageState extends State<CompletedTodosPage>
             padding: const EdgeInsets.all(30),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text("${value.length} Completed"),
+              Text("${value..length} Completed"),
               const Divider(),
               const Padding(padding: EdgeInsets.only(bottom: 10)),
               Expanded(

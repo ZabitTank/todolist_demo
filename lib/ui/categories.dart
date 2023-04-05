@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist_demo/providers/todo_provider.dart';
+import 'package:todolist_demo/cubit/categories/categories_cubit.dart';
 import 'package:todolist_demo/ui/components/add_category_modal_bottom_sheet.dart';
 import 'package:todolist_demo/ui/components/delete_button.dart';
 
@@ -14,8 +15,6 @@ class CategoryBox extends StatefulWidget {
 class _CategoryBoxState extends State<CategoryBox> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TodoProvider>(context);
-    var categories = provider.categories;
     String selectedCategory = "";
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +48,7 @@ class _CategoryBoxState extends State<CategoryBox> {
                 ],
               ),
             ),
-          ).then((value) => provider.addCategory(value));
+          ).then((value) => context.read<CategoriesCubit>().addCategory(value));
         },
         backgroundColor: Theme.of(context).primaryColor,
         child: const Icon(Icons.add),
@@ -58,26 +57,31 @@ class _CategoryBoxState extends State<CategoryBox> {
         padding: const EdgeInsets.all(20),
         child: Column(children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: categories.length,
-              itemBuilder: (context, index) => Row(
-                children: [
-                  Text(
-                    categories[index],
-                    style: const TextStyle(fontSize: 13),
+            child: BlocBuilder<CategoriesCubit, CategoriesState>(
+              builder: (context, state) {
+                return ListView.builder(
+                  itemCount: state.categories.length,
+                  itemBuilder: (context, index) => Row(
+                    children: [
+                      Text(
+                        state.categories[index],
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                      const Spacer(),
+                      IconButton(
+                          onPressed: () {
+                            selectedCategory = state.categories[index];
+                            Navigator.pop(context, selectedCategory);
+                          },
+                          icon: const Icon(Icons.check, size: 20)),
+                      DeleteButton(
+                          onTap: () => context
+                              .read<CategoriesCubit>()
+                              .removeCategory(state.categories[index]))
+                    ],
                   ),
-                  const Spacer(),
-                  IconButton(
-                      onPressed: () {
-                        selectedCategory = categories[index];
-                        Navigator.pop(context, selectedCategory);
-                      },
-                      icon: const Icon(Icons.check, size: 20)),
-                  DeleteButton(
-                    onTap: () => provider.removeCategory(categories[index]),
-                  )
-                ],
-              ),
+                );
+              },
             ),
           ),
         ]),

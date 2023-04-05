@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist_demo/models/todo.dart';
-import 'package:todolist_demo/providers/todo_provider.dart';
+import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
 import 'package:todolist_demo/ui/components/add_todo_modal_bottom_sheet.dart';
 import 'package:todolist_demo/ui/components/search_bar.dart';
 import 'package:todolist_demo/ui/components/todo_tile.dart';
@@ -50,9 +50,9 @@ class _TodosPageState extends State<TodosPage>
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(top: 30),
-                child: Consumer<TodoProvider>(
-                  builder: (context, provider, _) {
-                    final data = provider.allTodos
+                child: BlocBuilder<TodoCubit, TodoState>(
+                  builder: (context, state) {
+                    final data = state.allTodos
                         .where((element) => !element.toBeDeleted)
                         .toList();
                     return Visibility(

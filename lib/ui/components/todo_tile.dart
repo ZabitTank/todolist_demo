@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
 import 'package:todolist_demo/models/todo.dart';
-import 'package:todolist_demo/providers/todo_provider.dart';
 import 'package:todolist_demo/ui/todo_page.dart';
 
 class TodoTile extends StatelessWidget {
@@ -12,8 +13,6 @@ class TodoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("$parent: build todoTile ${todo.title}");
-    // final todo = todo;
-    final provider = Provider.of<TodoProvider>(context, listen: false);
     return SizedBox(
       height: 90,
       child: Card(
@@ -27,7 +26,7 @@ class TodoTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InkWell(
-                onTap: () => provider.toggleIsComplete(todo),
+                onTap: () => context.read<TodoCubit>().toggleIsComplete(todo),
                 child: Icon(
                   todo.isComplete ? Icons.check_circle : Icons.circle_outlined,
                   size: 25,
@@ -63,7 +62,8 @@ class TodoTile extends StatelessWidget {
                       Row(
                         children: [
                           Visibility(
-                            visible: todo.date != provider.currentDate,
+                            visible: todo.date !=
+                                DateFormat.yMMMd().format(DateTime.now()),
                             child: Text(
                               todo.date.contains(DateTime.now().year.toString())
                                   ? todo.date.replaceAll(
@@ -95,7 +95,10 @@ class TodoTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   InkWell(
-                    onTap: () => provider.toggleToBeDeleted(todo),
+                    onTap: () {
+                      context.read<TodoCubit>().toggleToBeDeleted(todo);
+                      print("On tap delete");
+                    },
                     child: todo.toBeDeleted
                         ? const Icon(
                             Icons.restore,

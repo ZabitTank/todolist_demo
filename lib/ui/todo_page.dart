@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
 import 'package:todolist_demo/models/todo.dart';
-import 'package:todolist_demo/providers/todo_provider.dart';
 
 class TodoPage extends StatelessWidget {
   final Todo todo;
@@ -11,9 +11,6 @@ class TodoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("Build todo page");
-
-    final provider = Provider.of<TodoProvider>(context);
-
     void closePage() {
       Navigator.of(context).pop();
     }
@@ -28,7 +25,7 @@ class TodoPage extends StatelessWidget {
           actions: [
             InkWell(
               onTap: () {
-                provider.toggleToBeDeleted(todo);
+                context.read<TodoCubit>().toggleToBeDeleted(todo);
                 closePage();
                 closePage();
               },

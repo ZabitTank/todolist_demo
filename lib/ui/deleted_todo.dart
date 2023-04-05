@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
 import 'package:todolist_demo/models/todo.dart';
-import 'package:todolist_demo/providers/todo_provider.dart';
 import 'package:todolist_demo/ui/components/todo_tile.dart';
 
 class DeletedTodosPage extends StatefulWidget {
@@ -18,23 +19,22 @@ class _DeletedTodosPageState extends State<DeletedTodosPage>
     super.build(context);
     print("delete page build");
 
-    return Selector<TodoProvider, List<Todo>>(
-        selector: (_, provider) => provider.deletedTodos,
-        shouldRebuild: (previous, next) => previous.length != next.length,
-        builder: (context, value, child) {
+    return BlocSelector<TodoCubit, TodoState, List<Todo>>(
+        selector: (state) => state.deletedTodos,
+        builder: (context, deletedTodos) {
           return Visibility(
             replacement:
                 const Center(child: Text("You have not deleted any tasks")),
-            visible: value.isNotEmpty,
+            visible: deletedTodos.isNotEmpty,
             child: Padding(
               padding: const EdgeInsets.all(30),
               child: Column(children: [
                 Expanded(
                   child: ListView.builder(
-                    itemCount: value.length,
+                    itemCount: deletedTodos.length,
                     itemBuilder: (context, index) => TodoTile(
                       parent: "Deleted",
-                      todo: value[index],
+                      todo: deletedTodos[index],
                     ),
                   ),
                 ),

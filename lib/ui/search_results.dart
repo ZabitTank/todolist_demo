@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
 import 'package:todolist_demo/models/todo.dart';
-import 'package:todolist_demo/providers/todo_provider.dart';
 import 'package:todolist_demo/ui/components/todo_tile.dart';
 
 class SearchResultsPage extends StatelessWidget {
@@ -38,23 +39,23 @@ class SearchResultsPage extends StatelessWidget {
         padding: const EdgeInsets.all(30),
         child: Column(
           children: [
-            Consumer<TodoProvider>(builder: (context, value, child) {
-              List<Todo> searchResults = value.getSearchResults(task);
-
-              return Visibility(
-                replacement: Center(
-                  child: Text("${searchResults.length} items found"),
-                ),
-                visible: searchResults.isNotEmpty,
-                child: Expanded(
-                  child: ListView.builder(
-                    itemCount: searchResults.length,
-                    itemBuilder: (context, index) =>
-                        TodoTile(todo: searchResults[index], parent: "search"),
-                  ),
-                ),
-              );
-            })
+            BlocSelector<TodoCubit, TodoState, List<Todo>>(
+                selector: (state) => state.getSearchResults(task),
+                builder: (context, value) {
+                  return Visibility(
+                    replacement: Center(
+                      child: Text("${value.length} items found"),
+                    ),
+                    visible: value.isNotEmpty,
+                    child: Expanded(
+                      child: ListView.builder(
+                        itemCount: value.length,
+                        itemBuilder: (context, index) =>
+                            TodoTile(todo: value[index], parent: "search"),
+                      ),
+                    ),
+                  );
+                })
           ],
         ),
       ),

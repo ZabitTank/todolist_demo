@@ -11,25 +11,32 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   TodoBloc({required this.repository}) : super(TodoState(allTodos: [])) {
     on<InitTodoEvent>(_initTodo);
 
-    on<AddTodoEvent>((event, emit) =>
-        emit(TodoState(allTodos: [...state.allTodos, event.newTodo])));
+    on<AddTodoEvent>(_addTodo);
 
-    on<DeleteTodoEvent>((event, emit) {
-      event.todo.toBeDeleted = !event.todo.toBeDeleted;
-      emit(TodoState(allTodos: state.allTodos));
-    });
+    on<DeleteTodoEvent>(_deleteTodo);
 
-    on<CompleteTodoEvent>((event, emit) {
-      if (event.todo.toBeDeleted) return;
-
-      event.todo.isComplete = !event.todo.isComplete;
-      emit(TodoState(allTodos: state.allTodos));
-    });
+    on<CompleteTodoEvent>(_completeTodo);
   }
 
   void _initTodo(InitTodoEvent event, Emitter<TodoState> emit) async {
     final todes = await repository.todoDataProvider.readTodos();
     emit(TodoState(allTodos: todes));
+  }
+
+  void _addTodo(AddTodoEvent event, Emitter<TodoState> emit) async {
+    emit(TodoState(allTodos: [...state.allTodos, event.newTodo]));
+  }
+
+  void _deleteTodo(DeleteTodoEvent event, Emitter<TodoState> emit) async {
+    event.todo.toBeDeleted = !event.todo.toBeDeleted;
+    emit(TodoState(allTodos: state.allTodos));
+  }
+
+  void _completeTodo(CompleteTodoEvent event, Emitter<TodoState> emit) {
+    if (event.todo.toBeDeleted) return;
+
+    event.todo.isComplete = !event.todo.isComplete;
+    emit(TodoState(allTodos: state.allTodos));
   }
 
   @override

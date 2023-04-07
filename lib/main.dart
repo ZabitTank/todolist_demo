@@ -50,9 +50,9 @@ class MyApp extends StatelessWidget {
                 child: Text(
                   "Todo Bloc",
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                      color: Colors.black),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                  ),
                 ),
               ),
               bottom: TabBar(

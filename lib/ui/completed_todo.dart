@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:todolist_demo/blocs/todo/todo_bloc.dart';
 import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
 import 'package:todolist_demo/ui/components/todo_tile.dart';
@@ -18,7 +19,8 @@ class _CompletedTodosPageState extends State<CompletedTodosPage>
     super.build(context);
     print("completed page build");
 
-    return BlocBuilder<TodoBloc, TodoState>(
+    return BlocConsumer<TodoBloc, TodoState>(
+      listener: (context, state) {},
       buildWhen: (previous, current) =>
           previous.completedTodos != current.completedTodos,
       builder: (context, state) {

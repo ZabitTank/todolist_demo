@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:todolist_demo/blocs/snackbar/snackbar_bloc.dart';
 import 'package:todolist_demo/blocs/todo/todo_bloc.dart';
 import 'package:todolist_demo/models/todo.dart';
 import 'package:todolist_demo/ui/todo_page.dart';
@@ -98,6 +99,15 @@ class TodoTile extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       context.read<TodoBloc>().add(DeleteTodoEvent(todo: todo));
+                      if (todo.toBeDeleted) {
+                        context.read<SnackBarBloc>().add(ShowSnackBarEvent(
+                            title: "Restore Task",
+                            content: "Restore Task ${todo.title}"));
+                      } else {
+                        context.read<SnackBarBloc>().add(ShowSnackBarEvent(
+                            title: "Delete Task",
+                            content: "Delete Task ${todo.title}"));
+                      }
                     },
                     child: todo.toBeDeleted
                         ? const Icon(

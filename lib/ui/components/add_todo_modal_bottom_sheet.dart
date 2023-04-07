@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:todolist_demo/blocs/snackbar/snackbar_bloc.dart';
 import 'package:todolist_demo/blocs/todo/todo_bloc.dart';
 import 'package:todolist_demo/models/todo.dart';
 import 'package:todolist_demo/ui/categories.dart';
@@ -153,6 +154,10 @@ class _AddTaskModalBottomSheetState extends State<AddTaskModalBottomSheet> {
                               category: category),
                         ),
                       );
+                  BlocProvider.of<SnackBarBloc>(context).add(ShowSnackBarEvent(
+                    title: "New Todo",
+                    content: "Todo ${titleController.text.trim()} is created",
+                  ));
                 }
                 Navigator.of(context).pop();
               },

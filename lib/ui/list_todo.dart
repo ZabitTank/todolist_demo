@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todolist_demo/blocs/snackbar/snackbar_bloc.dart';
 import 'package:todolist_demo/blocs/todo/todo_bloc.dart';
 import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
 import 'package:todolist_demo/ui/components/add_todo_modal_bottom_sheet.dart';
@@ -34,48 +35,22 @@ class _TodosPageState extends State<TodosPage>
           Icons.add,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      body: BlocListener<SnackBarBloc, SnackBarState>(
+        listener: (_, state) {
+          showMySnackBar(context, state);
+        },
+        child: const ListTodoBody(),
+      ),
+    );
+  }
+
+  void showMySnackBar(BuildContext context, SnackBarState state) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Expanded(
-                  child: SearchBar(),
-                ),
-              ],
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 30),
-                child: BlocBuilder<TodoBloc, TodoState>(
-                  builder: (context, state) {
-                    final data = state.allTodos
-                        .where((element) => !element.toBeDeleted)
-                        .toList();
-                    return Visibility(
-                      visible: data.isNotEmpty,
-                      replacement: const Center(
-                        child: Text(
-                          "You have no tasks",
-                          style: TextStyle(letterSpacing: 0.1),
-                        ),
-                      ),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: data.length,
-                        itemBuilder: (context, index) => TodoTile(
-                          parent: "Todo List",
-                          todo: data[index],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
+            Text(state.title),
+            Text(state.content),
           ],
         ),
       ),
@@ -84,4 +59,59 @@ class _TodosPageState extends State<TodosPage>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class ListTodoBody extends StatelessWidget {
+  const ListTodoBody({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(30),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Expanded(
+                child: SearchBar(),
+              ),
+            ],
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: BlocBuilder<TodoBloc, TodoState>(
+                builder: (context, state) {
+                  final data = state.allTodos
+                      .where((element) => !element.toBeDeleted)
+                      .toList();
+                  return Visibility(
+                    visible: data.isNotEmpty,
+                    replacement: const Center(
+                      child: Text(
+                        "You have no tasks",
+                        style: TextStyle(letterSpacing: 0.1),
+                      ),
+                    ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: data.length,
+                      itemBuilder: (context, index) => TodoTile(
+                        parent: "Todo List",
+                        todo: data[index],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

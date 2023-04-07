@@ -3,14 +3,13 @@ import 'package:todolist_demo/cubit/todo/todo_cubit.dart';
 import 'package:todolist_demo/data/repository.dart';
 import 'package:todolist_demo/models/todo.dart';
 
+part 'todo_event.dart';
+
 class TodoBloc extends Bloc<TodoEvent, TodoState> {
   final Repository repository;
 
   TodoBloc({required this.repository}) : super(TodoState(allTodos: [])) {
-    on<InitTodoEvent>((event, emit) async {
-      final todes = await repository.todoDataProvider.readTodos();
-      emit(TodoState(allTodos: todes));
-    });
+    on<InitTodoEvent>(_initTodo);
 
     on<AddTodoEvent>((event, emit) =>
         emit(TodoState(allTodos: [...state.allTodos, event.newTodo])));
@@ -28,30 +27,13 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     });
   }
 
+  void _initTodo(InitTodoEvent event, Emitter<TodoState> emit) async {
+    final todes = await repository.todoDataProvider.readTodos();
+    emit(TodoState(allTodos: todes));
+  }
+
   @override
   void onTransition(Transition<TodoEvent, TodoState> transition) {
     super.onTransition(transition);
-    print(transition);
   }
-}
-
-abstract class TodoEvent {}
-
-class InitTodoEvent extends TodoEvent {
-  InitTodoEvent();
-}
-
-class AddTodoEvent extends TodoEvent {
-  Todo newTodo;
-  AddTodoEvent({required this.newTodo});
-}
-
-class DeleteTodoEvent extends TodoEvent {
-  Todo todo;
-  DeleteTodoEvent({required this.todo});
-}
-
-class CompleteTodoEvent extends TodoEvent {
-  Todo todo;
-  CompleteTodoEvent({required this.todo});
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist_demo/blocs/todo_bloc.dart';
+import 'package:todolist_demo/blocs/todo/todo_bloc.dart';
 import 'package:todolist_demo/models/todo.dart';
 import 'package:todolist_demo/ui/categories.dart';
 import 'package:todolist_demo/ui/components/todo_property_row.dart';

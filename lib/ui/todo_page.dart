@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todolist_demo/blocs/todo_bloc.dart';
+import 'package:todolist_demo/blocs/todo/todo_bloc.dart';
 import 'package:todolist_demo/models/todo.dart';
 
 class TodoPage extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todolist_demo/blocs/categories_bloc.dart';
+import 'package:todolist_demo/blocs/categories/categories_bloc.dart';
 import 'package:todolist_demo/cubit/categories/categories_cubit.dart';
 import 'package:todolist_demo/ui/components/add_category_modal_bottom_sheet.dart';
 import 'package:todolist_demo/ui/components/delete_button.dart';
